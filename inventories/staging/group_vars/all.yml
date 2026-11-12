@@ -1,0 +1,4 @@
+---
+env_name: staging
+admin_email: devops-staging@example.local
+ntp_server: pool.ntp.org

@@ -1,0 +1,4 @@
+---
+nginx_http_port: 8080
+nginx_worker_processes: 1
+server_role: frontend_proxy
