@@ -1,0 +1,9 @@
+---
+security_base_packages:
+  - openssh-server
+  - ufw
+  - fail2ban
+  - curl
+
+security_allowed_ports:
+  - "22"

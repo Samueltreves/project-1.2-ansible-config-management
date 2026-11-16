@@ -1,0 +1,6 @@
+---
+- name: Harden and configure staging servers
+  hosts: all
+  become: yes
+  roles:
+    - security
