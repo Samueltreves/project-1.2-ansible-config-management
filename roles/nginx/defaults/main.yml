@@ -1,0 +1,5 @@
+---
+nginx_server_name: "staging.local"
+nginx_upstream_port: 8080
+nginx_rate_limit: "10r/s"
+nginx_rate_burst: 20

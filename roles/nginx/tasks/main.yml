@@ -1,0 +1,39 @@
+---
+- name: Install Nginx web server
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+    update_cache: yes
+
+- name: Remove default Nginx site configuration
+  ansible.builtin.file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify: Reload Nginx
+
+- name: Deploy hardened Nginx reverse proxy configuration
+  ansible.builtin.template:
+    src: reverse_proxy.conf.j2
+    dest: /etc/nginx/sites-available/reverse_proxy.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload Nginx
+
+- name: Enable hardened Nginx reverse proxy site
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/reverse_proxy.conf
+    dest: /etc/nginx/sites-enabled/reverse_proxy.conf
+    state: link
+  notify: Reload Nginx
+
+- name: Validate Nginx configuration syntax
+  ansible.builtin.command:
+    cmd: nginx -t
+  changed_when: false
+
+- name: Ensure Nginx service is started and enabled
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: yes
