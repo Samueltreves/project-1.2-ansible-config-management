@@ -1,5 +1,5 @@
 ---
-- name: Harden and configure staging servers
+- name: Full-stack server hardening, Docker engine, Nginx reverse proxy & App deployment
   hosts: all
   become: yes
   roles:
@@ -9,3 +9,22 @@
       tags: [docker]
     - role: nginx
       tags: [nginx]
+
+  post_tasks:
+    - name: Create isolated Docker network for backend application
+      community.docker.docker_network:
+        name: app_backend_net
+        state: present
+      tags: [deploy_app]
+
+    - name: Run internal backend container bound strictly to localhost
+      community.docker.docker_container:
+        name: staging-web-app
+        image: nginxdemos/hello:plain-text
+        state: started
+        restart_policy: unless-stopped
+        ports:
+          - "127.0.0.1:8080:80"
+        networks:
+          - name: app_backend_net
+      tags: [deploy_app]
