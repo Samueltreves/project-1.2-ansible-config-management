@@ -6,7 +6,7 @@
       - curl
       - gnupg
     state: present
-    update_cache: yes
+    update_cache: true
 
 - name: Ensure /etc/apt/keyrings directory exists
   ansible.builtin.file:
@@ -34,7 +34,7 @@
       - containerd.io
       - docker-compose-plugin
     state: present
-    update_cache: yes
+    update_cache: true
   tags:
     - docker_install
 
@@ -57,11 +57,11 @@
   ansible.builtin.user:
     name: "{{ item }}"
     groups: docker
-    append: yes
+    append: true
   loop: "{{ docker_users }}"
 
 - name: Ensure Docker service is started and enabled
   ansible.builtin.service:
     name: docker
     state: started
-    enabled: yes
+    enabled: true

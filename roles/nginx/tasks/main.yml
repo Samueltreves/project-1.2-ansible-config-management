@@ -3,7 +3,7 @@
   ansible.builtin.apt:
     name: nginx
     state: present
-    update_cache: yes
+    update_cache: true
 
 - name: Remove default Nginx site configuration
   ansible.builtin.file:
@@ -36,4 +36,4 @@
   ansible.builtin.service:
     name: nginx
     state: started
-    enabled: yes
+    enabled: true

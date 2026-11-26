@@ -1,7 +1,7 @@
 ---
 - name: Full-stack server hardening, Docker engine, Nginx reverse proxy & App deployment
   hosts: all
-  become: yes
+  become: true
   roles:
     - role: security
       tags: [security]

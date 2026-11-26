@@ -3,7 +3,7 @@
   ansible.builtin.apt:
     name: "{{ security_base_packages }}"
     state: present
-    update_cache: yes
+    update_cache: true
 
 - name: Disable root login via SSH
   ansible.builtin.lineinfile:
