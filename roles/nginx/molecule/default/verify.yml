@@ -1,0 +1,33 @@
+---
+- name: Verify Nginx role deployment
+  hosts: all
+  become: true
+  tasks:
+    - name: Check reverse proxy symlink exists
+      ansible.builtin.stat:
+        path: /etc/nginx/sites-enabled/reverse_proxy.conf
+      register: proxy_conf
+
+    - name: Assert reverse proxy config is enabled
+      ansible.builtin.assert:
+        that:
+          - proxy_conf.stat.exists
+          - proxy_conf.stat.islnk
+
+    - name: Check default site is removed
+      ansible.builtin.stat:
+        path: /etc/nginx/sites-enabled/default
+      register: default_conf
+
+    - name: Assert default site does not exist
+      ansible.builtin.assert:
+        that:
+          - not default_conf.stat.exists
+
+    - name: Gather service facts
+      ansible.builtin.service_facts:
+
+    - name: Assert Nginx service is running
+      ansible.builtin.assert:
+        that:
+          - ansible_facts.services["nginx.service"].state == "running"
